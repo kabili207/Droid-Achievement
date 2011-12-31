@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/toast_layout_root"
+android:orientation="horizontal"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:padding="1dp"
+>
+
+<ImageView
+    android:id="@+id/image"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:layout_marginRight="5dp"
+    android:src="@drawable/fortune_back" />
+
+<TextView
+    android:id="@+id/text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@+id/image"
+    android:layout_centerVertical="true"
+    android:layout_marginLeft="30dp"
+    android:background="#e8e8e8"
+    android:gravity="center"
+    android:paddingLeft="12dp"
+    android:paddingRight="10dp"
+	android:text="@string/title_fortune"
+    android:textColor="#222" />
+
+<ImageView
+    android:id="@+id/image2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:src="@drawable/fortune_front" />
+
+</RelativeLayout>

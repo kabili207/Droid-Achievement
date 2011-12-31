@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen android:key="@string/pref_key_name"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference 
+       	android:title="Test Fortunes"
+       	android:summary="Displays a test fortune" android:key="@string/pref_btn_test"/>
+    <Preference 
+        android:key="@string/pref_btn_builtin"
+       	android:title="Load Built-in Fortunes"
+       	android:summary="Loads fortunes from a built-in collection" />
+    <Preference
+        android:key="@string/pref_btn_import"
+       	android:title="Load Fortune File"
+       	android:summary="Loads fortunes from a file on your phone" />
+    <!--  
+    <Preference
+        android:key="@string/pref_btn_export"
+       	android:title="Save Fortune File"
+       	android:summary="Saves all your loaded fortunes to a fortune file" />
+       	
+       	-->
+    <Preference
+        android:key="@string/pref_btn_clear"
+       	android:title="Clear Fortunes"
+       	android:summary="Deletes all loaded fortunes" />
+    <PreferenceCategory android:title="Preferences">
+       	<CheckBoxPreference
+       	    android:key="@string/pref_enabled"
+       	    android:title="Enabled"
+       	    android:summary="Enables achievements on screen unlock" />
+       	<ListPreference
+       	    android:entries="@array/pref_location_entries"
+       	    android:title="Location"
+       	    android:key="@string/pref_location"
+       	    android:entryValues="@array/pref_location_values"
+       	    android:summary="The location of the achievement display"
+       	    android:defaultValue="Default"
+       	    android:dependency="@string/pref_enabled" />
+       	<ListPreference
+       	    android:entries="@array/pref_theme_entries"
+       	    android:title="Theme"
+       	    android:key="@string/pref_theme"
+       	    android:entryValues="@array/pref_theme_values"
+       	    android:summary="The theme to use"
+       	    android:defaultValue="fortune"
+       	    android:dependency="@string/pref_enabled" />
+       	
+	    <com.zyrenth.achievement.PointPreference
+	       	android:title="Offset"
+	       	android:key="@string/pref_offset"
+	       	android:summary="The display offset"
+       	    android:dependency="@string/pref_enabled" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="About">
+        
+    <Preference
+        android:key="@string/pref_btn_about"
+       	android:title="About"
+       	android:summary="" />
+        </PreferenceCategory>
+</PreferenceScreen>
