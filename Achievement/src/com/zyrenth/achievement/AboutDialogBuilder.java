@@ -33,8 +33,8 @@ import android.widget.TextView;
 public final class AboutDialogBuilder {
 	private static String versionInfo;
 
-	public static AlertDialog create( Context context ) throws NameNotFoundException {
-		
+	public static AlertDialog create(Context context) throws NameNotFoundException {
+
 		PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_META_DATA);
 		versionInfo = pInfo.versionName;
 
@@ -42,19 +42,17 @@ public final class AboutDialogBuilder {
 		String versionString = String.format("Version: %s", versionInfo);
 		String aboutText = context.getString(R.string.about_text);
 
-		
 		final TextView message = new TextView(context);
-		
+
 		final SpannableString s = new SpannableString(aboutText);
 
-		
 		message.setPadding(5, 5, 5, 5);
-		
+
 		message.setText(Html.fromHtml(versionString + "\n\n" + s));
-		
+
 		Linkify.addLinks(message, Linkify.ALL);
 
-		return new AlertDialog.Builder(context).setTitle(aboutTitle).setCancelable(true).setIcon(R.drawable.fortune).setPositiveButton(
-			 context.getString(android.R.string.ok), null).setView(message).create();
+		return new AlertDialog.Builder(context).setTitle(aboutTitle).setCancelable(true).setIcon(R.drawable.fortune)
+				.setPositiveButton(context.getString(android.R.string.ok), null).setView(message).create();
 	}
 }

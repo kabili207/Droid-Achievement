@@ -31,156 +31,127 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-public class PointPreference extends DialogPreference
-{
-	
+public class PointPreference extends DialogPreference {
+
 	private Context mContext;
 	private TextView txtOffsetX;
 	private TextView txtOffsetY;
 	private Point initialValue;
-	
-	public PointPreference(Context context, AttributeSet attrs)
-	{
+
+	public PointPreference(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		mContext = context;
 	}
-	
-	public PointPreference(Context context, AttributeSet attrs, int defStyle)
-	{
+
+	public PointPreference(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		// TODO Auto-generated constructor stub
 		mContext = context;
 	}
-	
+
 	@Override
-	protected View onCreateDialogView()
-	{
-		LayoutInflater inflater = (LayoutInflater) mContext
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	protected View onCreateDialogView() {
+		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.point_pref, null);
-		
-		if (shouldPersist())
-		{
+
+		if (shouldPersist()) {
 			initialValue = getPersistedPoint(new Point(0, 0));
 			txtOffsetX = (TextView) layout.findViewById(R.id.txtOffsetX);
 			txtOffsetY = (TextView) layout.findViewById(R.id.txtOffsetY);
-			
-			if (initialValue != null)
-			{
+
+			if (initialValue != null) {
 				txtOffsetX.setText(initialValue.x + "");
 				txtOffsetY.setText(initialValue.y + "");
 			}
 		}
-		
+
 		return layout;
 	}
-	
+
 	@Override
-	public boolean hasKey()
-	{
+	public boolean hasKey() {
 		// TODO Auto-generated method stub
-		return this.getSharedPreferences().contains(getKey() + Constants.X_SUFFIX)
-				&& this.getSharedPreferences().contains(getKey() + Constants.Y_SUFFIX);
-		
+		return this.getSharedPreferences().contains(getKey() + Constants.X_SUFFIX) && this.getSharedPreferences().contains(getKey() + Constants.Y_SUFFIX);
+
 	}
-	
+
 	@Override
-	protected void onSetInitialValue(boolean restorePersistedValue,
-			Object defaultValue)
-	{
+	protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
 		// TODO Auto-generated method stub
 		super.onSetInitialValue(restorePersistedValue, defaultValue);
-		Point def = (defaultValue instanceof Point) ? (Point) defaultValue
-				: new Point(0, 0);
-		if (restorePersistedValue)
-		{
+		Point def = (defaultValue instanceof Point) ? (Point) defaultValue : new Point(0, 0);
+		if (restorePersistedValue) {
 			this.initialValue = getPersistedPoint(def);
-		}
-		else
+		} else
 			this.initialValue = (Point) defaultValue;
 	}
-	
-	private Point getPersistedPoint(Point def)
-	{
+
+	private Point getPersistedPoint(Point def) {
 		// TODO Auto-generated method stub
-		if (this.isPersistent())
-		{
+		if (this.isPersistent()) {
 			int x = this.getSharedPreferences().getInt(getKey() + Constants.X_SUFFIX, 0);
 			int y = this.getSharedPreferences().getInt(getKey() + Constants.Y_SUFFIX, 0);
 			return new Point(x, y);
 		}
 		return def;
 	}
-	
+
 	@Override
-	protected void onBindDialogView(View view)
-	{
+	protected void onBindDialogView(View view) {
 		// TODO Auto-generated method stub
 		super.onBindDialogView(view);
-		
+
 		txtOffsetX = (TextView) view.findViewById(R.id.txtOffsetX);
 		txtOffsetY = (TextView) view.findViewById(R.id.txtOffsetY);
-		
-		if (initialValue != null)
-		{
+
+		if (initialValue != null) {
 			txtOffsetX.setText(initialValue.x + "");
 			txtOffsetY.setText(initialValue.y + "");
-		}
-		else
-		{
+		} else {
 		}
 	}
-	
+
 	@Override
-	protected Object onGetDefaultValue(TypedArray a, int index)
-	{
+	protected Object onGetDefaultValue(TypedArray a, int index) {
 		// TODO Auto-generated method stub
 		return new Point(0, 0);
 	}
-	
+
 	@Override
-	public void onClick(DialogInterface dialog, int which)
-	{
+	public void onClick(DialogInterface dialog, int which) {
 		super.onClick(dialog, which);
-		if (which == DialogInterface.BUTTON_POSITIVE)
-		{
+		if (which == DialogInterface.BUTTON_POSITIVE) {
 			int offX = 0, offY = 0;
-			
-			try
-			{
+
+			try {
 				offX = Integer.parseInt(txtOffsetX.getText().toString());
+			} catch (NumberFormatException nfe) {
 			}
-			catch (NumberFormatException nfe)
-			{
-			}
-			try
-			{
+			try {
 				offY = Integer.parseInt(txtOffsetY.getText().toString());
+			} catch (NumberFormatException nfe) {
 			}
-			catch (NumberFormatException nfe)
-			{
-			}
-			
+
 			if (initialValue == null)
 				initialValue = new Point(offX, offY);
 			else
 				initialValue.set(offX, offY);
-			
+
 			persistPoint(initialValue);
 			callChangeListener(initialValue);
 		}
 	}
-	
-	protected boolean persistPoint(Point p)
-	{
+
+	protected boolean persistPoint(Point p) {
 		String x = getKey() + Constants.X_SUFFIX;
 		String y = getKey() + Constants.Y_SUFFIX;
 		SharedPreferences.Editor ed = getEditor();
 		ed.putInt(x, p.x);
 		ed.putInt(y, p.y);
-		if (shouldCommit()) return ed.commit();
+		if (shouldCommit())
+			return ed.commit();
 		return false;
 	}
-	
+
 }

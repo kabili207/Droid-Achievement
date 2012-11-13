@@ -35,65 +35,59 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Fortune
-{
+public class Fortune {
 	public static int gravity;
 	public static int offsetX;
 	public static int offsetY;
 	public static int theme;
-	
-	public static void DisplayFortune(Context context)
-	{
+
+	public static void DisplayFortune(Context context) {
 		UpdateLocation(context);
 		DisplayFortune(context, offsetX, offsetY);
 	}
-	
-	public static void DisplayFortune(Context context, int offsetX, int offsetY)
-	{
+
+	public static void DisplayFortune(Context context, int offsetX, int offsetY) {
 		DisplayFortune(context, offsetX, offsetY, null);
 	}
-	
-	public static void DisplayFortune(Context context, int offsetX,
-			int offsetY, String location)
-	{
+
+	public static void DisplayFortune(Context context, int offsetX, int offsetY, String location) {
 		AchievementDbAdapter dbHelper = new AchievementDbAdapter(context);
 		dbHelper.open();
-		
+
 		Cursor cur = dbHelper.fetchAchievement();
-		
+
 		String message = "";
 		if (cur.getCount() > 0)
 			message = cur.getString(1);
 		if (message.trim().equals(""))
 			message = "You forget to load fortunes!";
-		
+
+		cur.close();
+
 		// and do whatever you need to do here
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(theme, null);
-		//ImageView image = (ImageView) layout.findViewById(R.id.image);
-		//image.setImageResource(R.drawable.achieve_p1);
-		
+		// ImageView image = (ImageView) layout.findViewById(R.id.image);
+		// image.setImageResource(R.drawable.achieve_p1);
+
 		TextView text = (TextView) layout.findViewById(R.id.text);
 		text.setText(text.getText() + message);
-		
+
 		Toast toast = new Toast(context);
-		
+
 		if (location != null)
 			toast.setGravity(getGravity(location), offsetX, offsetY);
 		else
 			toast.setGravity(gravity, offsetX, offsetY);
-		
+
 		toast.setDuration(Toast.LENGTH_LONG);
 		toast.setView(layout);
 		toast.show();
 	}
-	
-	public static String Rot13(String s)
-	{
+
+	public static String Rot13(String s) {
 		char[] ch = s.toCharArray();
-		for (int i = 0; i < ch.length; i++)
-		{
+		for (int i = 0; i < ch.length; i++) {
 			char c = ch[i];
 			if (c >= 'a' && c <= 'm')
 				c += 13;
@@ -107,9 +101,8 @@ public class Fortune
 		}
 		return new String(ch);
 	}
-	
-	public static void UpdateLocation(Context context)
-	{
+
+	public static void UpdateLocation(Context context) {
 		SharedPreferences settings = // context.getSharedPreferences(Constants.PREF_STRING,
 										// Context.MODE_PRIVATE);
 		PreferenceManager.getDefaultSharedPreferences(context);
@@ -118,70 +111,62 @@ public class Fortune
 		offsetY = settings.getInt(Constants.OFFSETY, 0);
 		theme = getTheme(settings.getString(Constants.THEME, "fortune"));
 	}
-	
-	private static int getGravity(String location)
-	{
+
+	private static int getGravity(String location) {
 		if (location.equals("Top"))
 			return Gravity.TOP;
-		
+
 		if (location.equals("Bottom"))
 			return Gravity.BOTTOM;
-		
+
 		if (location.equals("Left"))
 			return Gravity.LEFT;
-		
+
 		if (location.equals("Right"))
 			return Gravity.RIGHT;
-		
+
 		if (location.equals("Center"))
 			return Gravity.CENTER;
-		
+
 		return Gravity.NO_GRAVITY;
 	}
-	
-	private static int getTheme(String theme)
-	{
+
+	private static int getTheme(String theme) {
 		if (theme.equals("fortune"))
 			return R.layout.toast_fortune;
 		if (theme.equals("achievement"))
 			return R.layout.toast_360;
-		
+
 		return R.layout.toast_fortune;
 	}
-	
-	public static ArrayList<String> makeFortunes(Reader reader, int maxLength,
-			boolean rot13) throws IOException
-	{
-		
+
+	public static ArrayList<String> makeFortunes(Reader reader, int maxLength, boolean rot13) throws IOException {
+
 		BufferedReader myNumReader = new BufferedReader(reader);
-		
+
 		String input = "";
 		String temp = "";
 		ArrayList<String> fortunes = new ArrayList<String>();
 		boolean ignore = false;
-		while ((input = myNumReader.readLine()) != null)
-		{
-			if (input.equals("%"))
-			{
+		while ((input = myNumReader.readLine()) != null) {
+			if (input.equals("%")) {
 				temp = temp.trim();
-				
+
 				if (!ignore && !temp.equals("") && temp.length() <= maxLength)
 					fortunes.add(rot13 ? Rot13(temp) : temp);
-				
+
 				temp = "";
 				ignore = false;
-			}
-			else
-			{
+			} else {
 				if (temp.length() < maxLength)
 					temp += input.trim() + " ";
 				else
 					ignore = true;
 			}
-			
+
 		}
-		
+
 		return fortunes;
 	}
-	
+
 }

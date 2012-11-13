@@ -43,7 +43,7 @@ public class AchievementDbAdapter {
 	public AchievementDbAdapter open() throws SQLException {
 		dbHelper = new AchievementDbHelper(context);
 		db = dbHelper.getWritableDatabase();
-		//dbHelper.onUpgrade(db, 1, 1);
+		// dbHelper.onUpgrade(db, 1, 1);
 		return this;
 	}
 
@@ -58,7 +58,8 @@ public class AchievementDbAdapter {
 	public long createAchievement(String body) {
 		ContentValues values = createContentValues(body);
 
-		return db.insert(DB_TABLE, null, values);// SQLiteDatabase.CONFLICT_IGNORE );
+		return db.insert(DB_TABLE, null, values);// SQLiteDatabase.CONFLICT_IGNORE
+													// );
 	}
 
 	/**
@@ -97,9 +98,7 @@ public class AchievementDbAdapter {
 	 * Return a Cursor positioned at the defined todo
 	 */
 	public Cursor fetchAchievement(long rowId) throws SQLException {
-		Cursor mCursor = db.query(true, DB_TABLE, new String[] { KEY_ROWID,
-				KEY_BODY }, KEY_ROWID + "="
-				+ rowId, null, null, null, null, null);
+		Cursor mCursor = db.query(true, DB_TABLE, new String[] { KEY_ROWID, KEY_BODY }, KEY_ROWID + "=" + rowId, null, null, null, null, null);
 		if (mCursor != null) {
 			mCursor.moveToFirst();
 		}
@@ -110,25 +109,25 @@ public class AchievementDbAdapter {
 	 * Return a Cursor positioned at the defined todo
 	 */
 	public Cursor fetchAchievement() throws SQLException {
-		Cursor mCursor = db.query(true, DB_TABLE, new String[] { KEY_ROWID,
-				KEY_BODY }, null, null, null, null, "RANDOM()", "1");
+		Cursor mCursor = db.query(true, DB_TABLE, new String[] { KEY_ROWID, KEY_BODY }, null, null, null, null, "RANDOM()", "1");
 		if (mCursor != null) {
 			mCursor.moveToFirst();
 		}
 		return mCursor;
 	}
-	
+
 	/**
 	 * Return a Cursor positioned at the defined todo
 	 */
 	public int getCount() throws SQLException {
-		Cursor mCursor = db.query(true, DB_TABLE, new String[] {
-				"COUNT("+KEY_ROWID+")"}, null, null, null, null, null, null);
+		Cursor mCursor = db.query(true, DB_TABLE, new String[] { "COUNT(" + KEY_ROWID + ")" }, null, null, null, null, null, null);
+		int count = 0;
 		if (mCursor != null) {
 			mCursor.moveToFirst();
-			return mCursor.getInt(0);
+			count = mCursor.getInt(0);
+			mCursor.close();
 		}
-		return 0;
+		return count;
 	}
 
 	private ContentValues createContentValues(String body) {

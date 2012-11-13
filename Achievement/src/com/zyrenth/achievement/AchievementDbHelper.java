@@ -42,8 +42,7 @@ public class AchievementDbHelper extends SQLiteOpenHelper {
 	// Method is called during an upgrade of the database,
 	// e.g. if you increase the database version
 	@Override
-	public void onUpgrade(SQLiteDatabase database, int oldVersion,
-			int newVersion) {
+	public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
 		AchievementTable.onUpgrade(database, oldVersion, newVersion);
 	}
 }

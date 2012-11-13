@@ -20,10 +20,9 @@ package com.zyrenth.achievement;
  * 
  */
 
-public final class Constants
-{
+public final class Constants {
 	public static final String PREF_STRING = "AchievePrefs";
-	
+
 	public static final String LOCATION = "location";
 	public static final String OFFSET = "offset";
 	public static final String X_SUFFIX = "_X";
@@ -32,5 +31,5 @@ public final class Constants
 	public static final String OFFSETY = OFFSET + Y_SUFFIX;
 	public static final String ENABLED = "enabled";
 	public static final String THEME = "theme";
-	
+
 }

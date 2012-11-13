@@ -19,6 +19,7 @@
     <string name="pref_offset_x">offset_X</string>
     <string name="pref_offset_y">offset_Y</string>
     <string name="pref_btn_test">PrefBtnTest</string>
+    <string name="pref_btn_add">PrefBtnAdd</string>
     <string name="pref_btn_import">PrefBtnImport</string>
     <string name="pref_btn_builtin">PrefBtnBuiltIn</string>
     <string name="pref_btn_export">PrefBtnExport</string>
@@ -65,5 +66,6 @@
         \nThis program is distributed under the terms of the GNU General Public License, version 3:
         http://www.gnu.org/licenses/gpl-3.0.html
         \nSource available at: http://github.com/kabili207/Droid-Achievement</string>
+    <string name="prompt_fortune">Enter fortune</string>
 
 </resources>

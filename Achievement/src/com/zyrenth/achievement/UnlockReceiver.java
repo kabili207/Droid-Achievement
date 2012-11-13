@@ -32,11 +32,12 @@ public class UnlockReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
 
-			SharedPreferences settings = //context.getSharedPreferences("AchievePrefs", 0);
-				PreferenceManager.getDefaultSharedPreferences(context);
-			if(!settings.getBoolean(Constants.ENABLED, false))
+			SharedPreferences settings = // context.getSharedPreferences("AchievePrefs",
+											// 0);
+			PreferenceManager.getDefaultSharedPreferences(context);
+			if (!settings.getBoolean(Constants.ENABLED, false))
 				return;
-			
+
 			Fortune.DisplayFortune(context);
 		}
 

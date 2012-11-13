@@ -22,7 +22,6 @@ package com.zyrenth.achievement;
 
 import java.util.ArrayList;
 
-
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,15 +37,16 @@ public class MenuArrayAdapter extends ArrayAdapter<MenuArrayAdapter.MenuItem> {
 		public int resourceId;
 		public String title;
 		public boolean offensive;
+
 		public MenuItem(String title, int resourceId, boolean offensive) {
 			super();
 			this.resourceId = resourceId;
 			this.title = title;
 			this.offensive = offensive;
 		}
-	
+
 	}
-	
+
 	public MenuArrayAdapter(Activity context, ArrayList<MenuItem> menuItems) {
 		super(context, R.layout.menu_icon, menuItems);
 		this.context = context;
@@ -61,11 +61,9 @@ public class MenuArrayAdapter extends ArrayAdapter<MenuArrayAdapter.MenuItem> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
 
 		ViewHolder holder;
 		MenuItem menuItem = menuItems.get(position);
-		
 
 		View rowView = convertView;
 		if (rowView == null) {
@@ -79,9 +77,8 @@ public class MenuArrayAdapter extends ArrayAdapter<MenuArrayAdapter.MenuItem> {
 		}
 
 		holder.textView.setText((menuItem.offensive ? "Offensive - " : "") + menuItem.title);
-		
+
 		return rowView;
 	}
-	
-	
+
 }

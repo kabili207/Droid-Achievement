@@ -4,7 +4,7 @@
     <Preference 
        	android:title="Test Fortunes"
        	android:summary="Displays a test fortune" android:key="@string/pref_btn_test"/>
-    <Preference 
+    <Preference android:title="Add fortune" android:key="@string/pref_btn_add" android:summary="Manually enter a fortune"/><Preference 
         android:key="@string/pref_btn_builtin"
        	android:title="Load Built-in Fortunes"
        	android:summary="Loads fortunes from a built-in collection" />
@@ -59,4 +59,5 @@
        	android:title="About"
        	android:summary="" />
         </PreferenceCategory>
+    
 </PreferenceScreen>
