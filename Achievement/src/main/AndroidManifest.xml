@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zyrenth.achievement"
-    android:versionCode="2"
-    android:versionName="1.1" >
+    android:versionCode="3"
+    android:versionName="1.2" >
 
-    <uses-sdk android:minSdkVersion="4" />
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="16" />
 
     <application
+        android:allowBackup="true"
         android:icon="@drawable/fortune"
-        android:label="@string/app_name" android:enabled="true" android:debuggable="true" android:description="@string/app_desc">
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:description="@string/app_desc" >
         <activity
-            android:name=".AchievementActivity" >
+                android:name=".AchievementActivity" >
         </activity>
         <receiver android:name="UnlockReceiver">
             <intent-filter>
@@ -19,14 +24,14 @@
             </intent-filter>
         </receiver>
         <activity
-            android:label="@string/app_name"
-            android:name="MainListView">
+                android:label="@string/app_name"
+                android:name="MainListView">
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            </activity>
+        </activity>
         <activity android:name="BuiltinListView"></activity>
     </application>
 

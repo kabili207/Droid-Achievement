@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="action_settings" >Settings
+    </string>
+    <string name="hello_world" >Hello world!
+    </string>
+
     <string name="app_name">Fortune Unlock</string>
     <string name="app_desc">
         Display a random fortune every time you unlock your phone!
@@ -26,9 +31,9 @@
     <string name="pref_btn_about">PrefBtnAbout</string>
     <string name="pref_btn_clear">PrefBtnClear</string>
 
-        <string name="title_achieve">ACHIEVEMENT UNLOCKED\n</string>
-        <string name="title_fortune">Confucius says:\n</string>
-        
+    <string name="title_achieve">ACHIEVEMENT UNLOCKED\n</string>
+    <string name="title_fortune">Confucius says:\n</string>
+
     <string-array name="pref_theme_entries">
         <item>Fortune Cookie</item>
         <item>Achievement</item>
@@ -37,7 +42,7 @@
         <item>fortune</item>
         <item>achievement</item>
     </string-array>
-    
+
     <string-array name="pref_location_entries">
         <item>Default</item>
         <item>Top</item>
@@ -61,7 +66,7 @@
         fortune-mod program see
         http://en.wikipedia.org/wiki/Fortune_(Unix) .
         \n
-      	\nAuthors: Andrew Nagle, Tim Pearce
+        \nAuthors: Andrew Nagle, Tim Pearce
         \n
         \nThis program is distributed under the terms of the GNU General Public License, version 3:
         http://www.gnu.org/licenses/gpl-3.0.html
