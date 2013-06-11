@@ -14,9 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:description="@string/app_desc" >
-        <activity
-                android:name=".AchievementActivity" >
-        </activity>
+
         <receiver android:name="UnlockReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.SCREEN_ON"/>
@@ -32,7 +30,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="BuiltinListView"></activity>
+        <activity
+                android:name=".BuiltinListView"
+                android:label="Built-in Fortunes"
+                />
+        <activity
+                android:name=".AchievementListActivity"
+                android:label="Achievements"/>
+
+        <provider
+                android:name=".data.AchievementProvider"
+                android:authorities="com.zyrenth.achievement.data.provider" >
+        </provider>
     </application>
 
 </manifest>

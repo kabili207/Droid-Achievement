@@ -20,9 +20,13 @@
        	
        	-->
     <Preference
-        android:key="@string/pref_btn_clear"
-       	android:title="Clear Fortunes"
-       	android:summary="Deletes all loaded fortunes" />
+            android:key="@string/pref_btn_clear"
+            android:title="Clear Fortunes"
+            android:summary="Deletes all loaded fortunes" />
+    <Preference
+            android:key="@string/pref_btn_manage"
+            android:title="Manage Fortunes"
+            android:summary="Manages all loaded fortunes" />
     <PreferenceCategory android:title="Preferences">
        	<CheckBoxPreference
        	    android:key="@string/pref_enabled"

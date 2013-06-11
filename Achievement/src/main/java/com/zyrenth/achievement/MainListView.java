@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,6 +46,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zyrenth.achievement.data.AchievementProvider;
+import com.zyrenth.achievement.data.AchievementTable;
+
 public class MainListView extends PreferenceActivity implements
 // OnPreferenceChangeListener,
 		OnSharedPreferenceChangeListener {
@@ -52,9 +56,9 @@ public class MainListView extends PreferenceActivity implements
 	private Preference mBtnTestPref;
 	private Preference mBtnImport;
 	private Preference mBtnAbout;
-	private Preference mBtnClear;
+    private Preference mBtnClear;
+    private Preference mBtnManage;
 
-	private AchievementDbAdapter dbHelper;
 	private Preference mBtnBuiltIn;
 	private Preference mBtnAdd;
 	private static final int LOAD_BUILT_IN = 1;
@@ -65,14 +69,12 @@ public class MainListView extends PreferenceActivity implements
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.achieve_pref);
 
-		dbHelper = new AchievementDbAdapter(this);
-		dbHelper.open();
 
 		PreferenceScreen prefs = getPreferenceScreen();
 
 		mBtnTestPref = (Preference) prefs.findPreference(getString(R.string.pref_btn_test));
 
-		mBtnTestPref.setSummary("Total fortunes: " + dbHelper.getCount());
+		mBtnTestPref.setSummary("Total fortunes: " + Fortune.getCount(this));
 		mBtnTestPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
 			public boolean onPreferenceClick(Preference arg0) {
@@ -133,16 +135,32 @@ public class MainListView extends PreferenceActivity implements
 
 		});
 
-		mBtnClear = (Preference) prefs.findPreference(getString(R.string.pref_btn_clear));
-		mBtnClear.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        mBtnClear = (Preference) prefs.findPreference(getString(R.string.pref_btn_clear));
+        mBtnClear.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
-			public boolean onPreferenceClick(Preference arg0) {
-				dbHelper.deleteAchievements();
-				mBtnTestPref.setSummary("Total fortunes: " + dbHelper.getCount());
-				return false;
-			}
+            public boolean onPreferenceClick(Preference arg0) {
 
-		});
+                getContentResolver().delete(AchievementProvider.CONTENT_URI, null, null);
+
+                mBtnTestPref.setSummary("Total fortunes: 0");
+                return false;
+            }
+
+        });
+
+        mBtnManage = (Preference) prefs.findPreference(getString(R.string.pref_btn_manage));
+        mBtnManage.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+            public boolean onPreferenceClick(Preference arg0) {
+               // dbHelper.deleteAchievements();
+               // mBtnTestPref.setSummary("Total fortunes: " + dbHelper.getCount());
+                Intent i = new Intent(MainListView.this, AchievementListActivity.class);
+
+                startActivity(i);
+                return false;
+            }
+
+        });
 	}
 
 	private void LoadBuiltIn() {
@@ -159,7 +177,7 @@ public class MainListView extends PreferenceActivity implements
 
 						Intent i = new Intent(MainListView.this, BuiltinListView.class);
 
-						startActivityForResult(i, LOAD_BUILT_IN);
+                        startActivityForResult(i, LOAD_BUILT_IN);
 
 					}
 				});
@@ -179,7 +197,7 @@ public class MainListView extends PreferenceActivity implements
 		// sharedPreferences.getValue(key, ""));
 
 		// Set up a listener whenever a key changes
-		getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 	}
 
 	@Override
@@ -214,11 +232,14 @@ public class MainListView extends PreferenceActivity implements
 			public void onClick(View v) {
 				String text = txtFortune.getText().toString();
 				if (text.length() > 0) {
-					dbHelper.createAchievement(txtFortune.getText().toString());
+
+                    ContentValues values = new ContentValues();
+                    values.put(AchievementTable.COLUMN_BODY, txtFortune.getText().toString());
+                    getContentResolver().insert(AchievementProvider.CONTENT_URI, values);
 
 					Toast.makeText(MainListView.this, "Added Fortune", Toast.LENGTH_SHORT).show();
 
-					int count = dbHelper.getCount();
+					int count = Fortune.getCount(MainListView.this);
 					mBtnTestPref.setSummary("Total fortunes: " + count);
 					commentDialog.dismiss();
 				} else {
@@ -268,7 +289,7 @@ public class MainListView extends PreferenceActivity implements
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == LOAD_BUILT_IN) {
-			mBtnTestPref.setSummary("Total fortunes: " + dbHelper.getCount());
+			mBtnTestPref.setSummary("Total fortunes: " + Fortune.getCount(this));
 		} else if (requestCode == LOAD_FROM_FILE && resultCode == RESULT_OK) {
 			Uri uri = data.getData();
 			if (uri != null) {
@@ -285,11 +306,14 @@ public class MainListView extends PreferenceActivity implements
 									public void onClick(DialogInterface dialog, int id) {
 										dialog.dismiss();
 										for (int i = 0; i < fortunes.size(); i++) {
-											dbHelper.createAchievement(fortunes.get(i));
+
+                                            ContentValues values = new ContentValues();
+                                            values.put(AchievementTable.COLUMN_BODY, fortunes.get(i));
+                                            getContentResolver().insert(AchievementProvider.CONTENT_URI, values);
 										}
 										Toast.makeText(MainListView.this, fortunes.size() + " Found", Toast.LENGTH_SHORT).show();
 
-										int count = dbHelper.getCount();
+										int count = Fortune.getCount(MainListView.this);
 										mBtnTestPref.setSummary("Total fortunes: " + count);
 
 									}
@@ -297,11 +321,13 @@ public class MainListView extends PreferenceActivity implements
 									public void onClick(DialogInterface dialog, int id) {
 										dialog.dismiss();
 										for (int i = 0; i < fortunes.size(); i++) {
-											dbHelper.createAchievement(Fortune.Rot13(fortunes.get(i)));
+                                            ContentValues values = new ContentValues();
+                                            values.put(AchievementTable.COLUMN_BODY, Fortune.Rot13(fortunes.get(i)));
+                                            getContentResolver().insert(AchievementProvider.CONTENT_URI, values);
 										}
 										Toast.makeText(MainListView.this, fortunes.size() + " Found", Toast.LENGTH_SHORT).show();
 
-										int count = dbHelper.getCount();
+										int count = Fortune.getCount(MainListView.this);
 										mBtnTestPref.setSummary("Total fortunes: " + count);
 
 									}

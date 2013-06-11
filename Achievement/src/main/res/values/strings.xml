@@ -30,6 +30,7 @@
     <string name="pref_btn_export">PrefBtnExport</string>
     <string name="pref_btn_about">PrefBtnAbout</string>
     <string name="pref_btn_clear">PrefBtnClear</string>
+    <string name="pref_btn_manage">PrefBtnManage</string>
 
     <string name="title_achieve">ACHIEVEMENT UNLOCKED\n</string>
     <string name="title_fortune">Confucius says:\n</string>
@@ -72,5 +73,9 @@
         http://www.gnu.org/licenses/gpl-3.0.html
         \nSource available at: http://github.com/kabili207/Droid-Achievement</string>
     <string name="prompt_fortune">Enter fortune</string>
+    <string name="no_achievements">No Achievements</string>
+
+    <string name="menu_insert">Add Fortune</string>
+    <string name="menu_delete">Delete Fortune</string>
 
 </resources>

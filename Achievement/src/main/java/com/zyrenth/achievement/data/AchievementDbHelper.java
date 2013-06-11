@@ -1,4 +1,4 @@
-package com.zyrenth.achievement;
+package com.zyrenth.achievement.data;
 
 /*
  * Copyright 2011 Andrew Nagle
@@ -23,6 +23,8 @@ package com.zyrenth.achievement;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.zyrenth.achievement.data.AchievementTable;
 
 public class AchievementDbHelper extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "ZyrAchievement";

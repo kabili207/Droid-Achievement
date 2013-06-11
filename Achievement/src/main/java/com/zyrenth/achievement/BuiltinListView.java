@@ -26,20 +26,21 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.zyrenth.achievement.data.AchievementProvider;
+import com.zyrenth.achievement.data.AchievementTable;
+
 public class BuiltinListView extends ListActivity {
 
-	private AchievementDbAdapter dbHelper;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbHelper = new AchievementDbAdapter(this);
-		dbHelper.open();
 
 		ArrayList<MenuArrayAdapter.MenuItem> menuItems = new ArrayList<MenuArrayAdapter.MenuItem>();
 		menuItems.add(new MenuArrayAdapter.MenuItem("Art", R.raw.frtn_reg_art, false));
@@ -129,14 +130,16 @@ public class BuiltinListView extends ListActivity {
 		InputStream is = this.getResources().openRawResource(resourceId);
 
 		try {
-			int oldCount = dbHelper.getCount();
+			int oldCount = Fortune.getCount(this);
 			ArrayList<String> fortunes = Fortune.makeFortunes(new InputStreamReader(is), 40, offensive);
 
 			for (int i = 0; i < fortunes.size(); i++) {
-				dbHelper.createAchievement(fortunes.get(i));
+                ContentValues values = new ContentValues();
+                values.put(AchievementTable.COLUMN_BODY, fortunes.get(i));
+                getContentResolver().insert(AchievementProvider.CONTENT_URI, values);
 			}
 
-			int newCount = dbHelper.getCount();
+			int newCount = Fortune.getCount(this);
 			Toast.makeText(this, "Found " + (newCount - oldCount) + " new fortunes", Toast.LENGTH_SHORT).show();
 
 		} catch (IOException e) {

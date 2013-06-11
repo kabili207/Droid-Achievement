@@ -1,4 +1,4 @@
-package com.zyrenth.achievement;
+package com.zyrenth.achievement.data;
 
 /*
  * Copyright 2011 Andrew Nagle
@@ -24,16 +24,29 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class AchievementTable {
-	// Database creation SQL statement
-	private static final String DATABASE_CREATE = "create table achievements " + "(_id integer primary key autoincrement, " + "body text not null unique);";
 
+
+    // Database table
+    public static final String TABLE_ACHIEVEMENTS = "achievements";
+    public static final String COLUMN_ID = "_id";
+    public static final String SPECIAL_COLUMN_COUNT = "COUNT(" + COLUMN_ID + ")";
+    public static final String COLUMN_BODY = "body";
+
+    // Database creation SQL statement
+    private static final String DATABASE_CREATE = "create table "
+            + TABLE_ACHIEVEMENTS
+            + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_BODY + " text not null unique"
+            + ");";
 	public static void onCreate(SQLiteDatabase database) {
 		database.execSQL(DATABASE_CREATE);
 	}
 
 	public static void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-		Log.w(AchievementTable.class.getName(), "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
-		database.execSQL("DROP TABLE IF EXISTS achievements");
+		Log.w(AchievementTable.class.getName(), "Upgrading database from version "
+                + oldVersion + " to " + newVersion + ", which will destroy all old data");
+		database.execSQL("DROP TABLE IF EXISTS " + TABLE_ACHIEVEMENTS);
 		onCreate(database);
 	}
 }

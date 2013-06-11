@@ -25,15 +25,26 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.zyrenth.achievement.data.AchievementProvider;
+import com.zyrenth.achievement.data.AchievementTable;
+
+import org.jetbrains.annotations.NotNull;
 
 public class Fortune {
 	public static int gravity;
@@ -46,29 +57,50 @@ public class Fortune {
 		DisplayFortune(context, offsetX, offsetY);
 	}
 
+    public static String GetRandomFortune(Context context) {
+
+        String[] projection = { AchievementTable.COLUMN_BODY };
+        Uri uri = AchievementProvider.CONTENT_URI;
+
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, "RANDOM() LIMIT 1");
+        cursor.moveToFirst();
+
+        String message = "";
+        if (cursor.getCount() > 0)
+            message = cursor.getString(0);
+        if (message.trim().equals(""))
+            message = "You forget to load fortunes!";
+
+        cursor.close();
+
+        return message;
+    }
+
+    public static int getCount(Context context) {
+        String[] projection = { AchievementTable.SPECIAL_COLUMN_COUNT };
+        Uri uri = AchievementProvider.CONTENT_URI;
+
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+        int count = 0;
+        if (cursor != null) {
+            cursor.moveToFirst();
+            count = cursor.getInt(0);
+            cursor.close();
+        }
+        return count;
+    }
+
 	public static void DisplayFortune(Context context, int offsetX, int offsetY) {
 		DisplayFortune(context, offsetX, offsetY, null);
 	}
 
 	public static void DisplayFortune(Context context, int offsetX, int offsetY, String location) {
-		AchievementDbAdapter dbHelper = new AchievementDbAdapter(context);
-		dbHelper.open();
 
-		Cursor cur = dbHelper.fetchAchievement();
-
-		String message = "";
-		if (cur.getCount() > 0)
-			message = cur.getString(1);
-		if (message.trim().equals(""))
-			message = "You forget to load fortunes!";
-
-		cur.close();
+		String message = GetRandomFortune(context);
 
 		// and do whatever you need to do here
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(theme, null);
-		// ImageView image = (ImageView) layout.findViewById(R.id.image);
-		// image.setImageResource(R.drawable.achieve_p1);
 
 		TextView text = (TextView) layout.findViewById(R.id.text);
 		text.setText(text.getText() + message);
@@ -85,7 +117,9 @@ public class Fortune {
 		toast.show();
 	}
 
-	public static String Rot13(String s) {
+
+
+	public static @NotNull String Rot13(@NotNull String s) {
 		char[] ch = s.toCharArray();
 		for (int i = 0; i < ch.length; i++) {
 			char c = ch[i];
@@ -168,5 +202,7 @@ public class Fortune {
 
 		return fortunes;
 	}
+
+
 
 }
