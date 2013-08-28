@@ -32,8 +32,8 @@
     <string name="pref_btn_clear">PrefBtnClear</string>
     <string name="pref_btn_manage">PrefBtnManage</string>
 
-    <string name="title_achieve">ACHIEVEMENT UNLOCKED\n</string>
-    <string name="title_fortune">Confucius says:\n</string>
+    <string name="title_360">ACHIEVEMENT UNLOCKED</string>
+    <string name="title_fortune">Confucius says:</string>
 
     <string-array name="pref_theme_entries">
         <item>Fortune Cookie</item>

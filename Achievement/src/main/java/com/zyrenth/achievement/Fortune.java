@@ -68,7 +68,7 @@ public class Fortune {
         String message = "";
         if (cursor.getCount() > 0)
             message = cursor.getString(0);
-        if (message.trim().equals(""))
+        if (message == null || message.trim().equals(""))
             message = "You forget to load fortunes!";
 
         cursor.close();

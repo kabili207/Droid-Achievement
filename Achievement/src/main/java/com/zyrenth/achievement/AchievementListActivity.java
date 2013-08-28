@@ -1,23 +1,25 @@
 package com.zyrenth.achievement;
 
 import android.app.ListActivity;
-import android.app.LoaderManager;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.zyrenth.achievement.data.AchievementProvider;
 import com.zyrenth.achievement.data.AchievementTable;
 
@@ -25,21 +27,15 @@ import com.zyrenth.achievement.data.AchievementTable;
 /**
  * Created by kabili on 6/9/13.
  */
-/*
- * TodosOverviewActivity displays the existing todo items
- * in a list
- *
- * You can create new ones via the ActionBar entry "Insert"
- * You can delete existing ones via a long press on the item
- */
 
-public class AchievementListActivity extends ListActivity implements
+public class AchievementListActivity extends SherlockFragmentActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
     private static final int ACTIVITY_CREATE = 0;
     private static final int ACTIVITY_EDIT = 1;
     private static final int DELETE_ID = Menu.FIRST + 1;
     // private Cursor cursor;
     private SimpleCursorAdapter adapter;
+    private ListView mListView;
 
 
     /** Called when the activity is first created. */
@@ -47,16 +43,31 @@ public class AchievementListActivity extends ListActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
-        this.getListView().setDividerHeight(2);
+        //setContentView(R.layout.activity_list);
+        setContentView(android.R.layout.list_content);
+        mListView = (ListView)this.findViewById(android.R.id.list);
+        mListView.setDividerHeight(2);
         fillData();
-        registerForContextMenu(getListView());
+        registerForContextMenu(mListView);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Intent i = new Intent(this, TodoDetailActivity.class);
+                //Uri todoUri = Uri.parse(MyTodoContentProvider.CONTENT_URI + "/" + id);
+                //i.putExtra(MyTodoContentProvider.CONTENT_ITEM_TYPE, todoUri);
+
+                //startActivity(i);
+            }
+        });
+
+
     }
 
     // Create the menu based on the XML defintion
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.listmenu, menu);
         return true;
     }
@@ -72,7 +83,7 @@ public class AchievementListActivity extends ListActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+  /*  @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case DELETE_ID:
@@ -84,23 +95,13 @@ public class AchievementListActivity extends ListActivity implements
                 fillData();
                 return true;
         }
+
         return super.onContextItemSelected(item);
-    }
+    }*/
 
     private void createTodo() {
         //Intent i = new Intent(this, TodoDetailActivity.class);
        // startActivity(i);
-    }
-
-    // Opens the second activity if an entry is clicked
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        //Intent i = new Intent(this, TodoDetailActivity.class);
-        //Uri todoUri = Uri.parse(MyTodoContentProvider.CONTENT_URI + "/" + id);
-        //i.putExtra(MyTodoContentProvider.CONTENT_ITEM_TYPE, todoUri);
-
-        //startActivity(i);
     }
 
 
@@ -113,11 +114,12 @@ public class AchievementListActivity extends ListActivity implements
         // Fields on the UI to which we map
         int[] to = new int[] { R.id.body };
 
-        getLoaderManager().initLoader(0, null, this);
+
+        getSupportLoaderManager().initLoader(0, null, this);
         adapter = new SimpleCursorAdapter(this, R.layout.row_achievement, null, from,
                 to, 0);
 
-        setListAdapter(adapter);
+        mListView.setAdapter(adapter);
     }
 
     @Override

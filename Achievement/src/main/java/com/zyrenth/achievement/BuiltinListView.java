@@ -25,17 +25,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import android.app.ListActivity;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockListActivity;
 import com.zyrenth.achievement.data.AchievementProvider;
 import com.zyrenth.achievement.data.AchievementTable;
 
-public class BuiltinListView extends ListActivity {
+public class BuiltinListView extends SherlockListActivity {
 
 
 	@Override
@@ -133,11 +133,11 @@ public class BuiltinListView extends ListActivity {
 			int oldCount = Fortune.getCount(this);
 			ArrayList<String> fortunes = Fortune.makeFortunes(new InputStreamReader(is), 40, offensive);
 
-			for (int i = 0; i < fortunes.size(); i++) {
+            for (String fortune : fortunes) {
                 ContentValues values = new ContentValues();
-                values.put(AchievementTable.COLUMN_BODY, fortunes.get(i));
+                values.put(AchievementTable.COLUMN_BODY, fortune);
                 getContentResolver().insert(AchievementProvider.CONTENT_URI, values);
-			}
+            }
 
 			int newCount = Fortune.getCount(this);
 			Toast.makeText(this, "Found " + (newCount - oldCount) + " new fortunes", Toast.LENGTH_SHORT).show();
